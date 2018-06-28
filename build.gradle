@@ -1,0 +1,39 @@
+allprojects{
+
+    apply plugin: "idea"
+    apply plugin: "eclipse"
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
+// This is what we are using in the subprojects only
+subprojects {
+    apply plugin: "java"
+
+    dependencies {
+        compile "com.google.code.gson:gson:2.8.2"
+        testCompile 'junit:junit:4.12'
+        testCompile "org.mockito:mockito-core:2.+"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+}
+
+task compileAndDeploy() {
+    group "team1091"
+    description "Compile all the projects and deploy the robot code"
+
+    dependsOn(getTasksByName('assemble', true))
+
+    finalizedBy("robot:deploy")
+    doLast {
+        println "Done Compiling, will try to deploy"
+    }
+}
+
+
