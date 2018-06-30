@@ -1,12 +1,12 @@
 package com.team1091.shared.autonomous.commands
 
-import com.team1091.shared.components.Drive
+import com.team1091.shared.control.RobotComponents
 
-class DriveForwards(val drive: Drive) : Command {
+class DriveForwards(val components: RobotComponents) : Command {
 
 
     override fun execute(dt: Double): Command {
-        drive.arcadeDrive(1.0, 0.0)
+        components.drive.arcadeDrive(1.0, 0.0)
         return this
     }
 

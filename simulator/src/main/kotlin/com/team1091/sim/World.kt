@@ -13,7 +13,7 @@ class World(
     var elapsedSec: Long = 0
 
     // Runs the sim
-    fun sim() {
+    fun stepSimulation() {
         elapsedSec = (System.currentTimeMillis() - startTime) / 1000
 
 
@@ -52,10 +52,10 @@ class World(
                 rv += drive.rotationalAccel.toFloat()
 
                 // linear friction - limits velocity in any direction.  More friction in ways against the wheel
-                v = moveToward(v, 0.0, 0.1)
+                v = moveToward(v, 0.0, 0.2)
 
                 // rotational friction
-                rv = moveToward(rv, 0.0, 0.01)
+                rv = moveToward(rv, 0.0, 0.05)
 
                 // TODO: drifting?
 
