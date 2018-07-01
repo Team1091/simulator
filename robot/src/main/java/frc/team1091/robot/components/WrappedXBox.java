@@ -56,4 +56,64 @@ public class WrappedXBox implements IGameController {
     }
 
 
+    @Override
+    public double getLeftTrigger() {
+        return xbox.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
+
+    @Override
+    public double getRightTrigger() {
+        return xbox.getTriggerAxis(GenericHID.Hand.kRight);
+    }
+
+    @Override
+    public boolean pressedLeftBumper() {
+        return xbox.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    @Override
+    public boolean pressedRightBumper() {
+        return xbox.getBumper(GenericHID.Hand.kRight);
+    }
+
+    @Override
+    public boolean getLeftStick() {
+        return xbox.getStickButton(GenericHID.Hand.kLeft);
+    }
+
+    @Override
+    public boolean getRightStick() {
+        return xbox.getStickButton(GenericHID.Hand.kRight);
+    }
+
+    @Override
+    public boolean getStart() {
+        return xbox.getStartButton();
+    }
+
+    @Override
+    public boolean getBack() {
+        return xbox.getBackButton();
+    }
+
+    // Does the dpad exist?  Might need to listen to certain buttons
+//    @Override
+//    public boolean getDPadUp() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean getDPadDown() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean getDPadLeft() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean getDPadRight() {
+//        return false;
+//    }
 }

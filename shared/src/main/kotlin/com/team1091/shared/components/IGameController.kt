@@ -13,10 +13,22 @@ interface IGameController {
     fun pressedX(): Boolean
     fun pressedY(): Boolean
 
-    // left trigger, right trigger
-    // left bumper, right bumper
-    // left stick, right stick
-    // start
-    // select
+    fun getLeftTrigger(): Double
+    fun getRightTrigger(): Double
+
+    fun pressedLeftBumper(): Boolean
+    fun pressedRightBumper(): Boolean
+
+    fun getLeftStick(): Boolean
+    fun getRightStick(): Boolean
+
+    fun getStart(): Boolean
+    fun getBack(): Boolean
+
+    // Currently not implemented on the frc stuff, may be able to work around it
+//    fun getDPadUp():Boolean
+//    fun getDPadDown():Boolean
+//    fun getDPadLeft():Boolean
+//    fun getDPadRight():Boolean
 
 }
