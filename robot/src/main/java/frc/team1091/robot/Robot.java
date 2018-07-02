@@ -1,8 +1,8 @@
 package frc.team1091.robot;
 
 import com.team1091.shared.components.IDrive;
-import com.team1091.shared.components.IGameController;
 import com.team1091.shared.components.IEncoder;
+import com.team1091.shared.components.IGameController;
 import com.team1091.shared.control.RobotComponents;
 import com.team1091.shared.control.TeamRobot;
 import com.team1091.shared.control.TeamRobotImpl;

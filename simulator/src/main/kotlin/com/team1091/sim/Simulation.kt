@@ -32,16 +32,18 @@ class Simulator : PApplet() {
             val yPos = 100.0 + 200.0 * (id % 3)
             val rotation = if (right) reverse else 0.0
 
-            Robot(xPos, yPos, 0.0,
+            val rc = RobotComponents(
+                    SimController(controllers, id),
+                    drive,
+                    SimEncoder(Vec2d(-20.0, -20.0)),
+                    SimEncoder(Vec2d(20.0, -20.0))
+            )
+
+            SimRobot(xPos, yPos, 0.0,
                     rotation, 0.0,
-                    25.0, 30.0, TeamRobotImpl(
-                    RobotComponents(
-                            SimController(controllers, id),
-                            drive,
-                            SimEncoder(Vec2d(-20.0, -20.0)),
-                            SimEncoder(Vec2d(20.0, -20.0))
-                    )
-            ), drive)
+                    25.0, 30.0,
+                    TeamRobotImpl(rc),
+                    drive)
         }
 
         world = World(

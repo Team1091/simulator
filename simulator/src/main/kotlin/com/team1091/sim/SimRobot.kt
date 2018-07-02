@@ -4,7 +4,7 @@ import com.team1091.shared.control.TeamRobot
 import com.team1091.sim.components.SimDrive
 
 
-class Robot(
+class SimRobot(
         var x: Double, var y: Double, // position
         var v: Double, // linear velocity
 

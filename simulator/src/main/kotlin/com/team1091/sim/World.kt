@@ -3,9 +3,9 @@ package com.team1091.sim
 import com.team1091.shared.math.moveToward
 
 class World(
-        val fieldXSize: Double = 1200.0,
-        val fieldYSize: Double = 600.0,
-        val robots: Array<Robot>,
+        val fieldXSize: Double = 650.0,
+        val fieldYSize: Double = 320.0,
+        val robots: Array<SimRobot>,
         val startTime: Long
 ) {
 

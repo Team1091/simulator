@@ -1,8 +1,8 @@
 package com.team1091.shared.control
 
 import com.team1091.shared.autonomous.commands.DriveForwards
-import com.team1091.shared.components.IEncoder
 import com.team1091.shared.components.IDrive
+import com.team1091.shared.components.IEncoder
 import com.team1091.shared.components.IGameController
 import com.team1091.shared.system.AutonomousSystem
 
@@ -16,7 +16,7 @@ class RobotComponents(
 
 // This controls our robot in both the sim and real life
 class TeamRobotImpl(
- val components: RobotComponents
+        val components: RobotComponents
 
 ) : TeamRobot {
 
