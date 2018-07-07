@@ -1,5 +1,6 @@
 package com.team1091.shared.autonomous.commands
 
+// Not sure if this name really captures what this is
 class Or : Command {
 
     private val commands: List<Command>

@@ -10,12 +10,11 @@ class World(
 ) {
 
     var currentGameState: Period = Period.PREMATCH
-    var elapsedSec: Long = 0
+    var elapsedSec: Double = 0.0
 
     // Runs the sim
-    fun stepSimulation() {
-        elapsedSec = (System.currentTimeMillis() - startTime) / 1000
-        val dt = 0.1
+    fun stepSimulation(dt:Double = 0.1) {
+        elapsedSec += dt
 
         when (currentGameState) {
             Period.PREMATCH -> {

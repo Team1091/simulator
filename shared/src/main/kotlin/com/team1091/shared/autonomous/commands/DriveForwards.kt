@@ -6,6 +6,7 @@ class DriveForwards(val components: RobotComponents, val distance: Double) : Com
 
 
     override fun firstRun() {
+        println("Drive Starting")
         components.leftEncoder.reset()
     }
 
@@ -20,7 +21,7 @@ class DriveForwards(val components: RobotComponents, val distance: Double) : Com
     }
 
     override fun cleanUp() {
-        println("Cleaning")
+        println("Drive Cleaning")
         components.drive.arcadeDrive(0.0, 0.0)
     }
 

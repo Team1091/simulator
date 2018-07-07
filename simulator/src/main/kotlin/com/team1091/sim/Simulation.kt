@@ -82,17 +82,21 @@ class Simulator : PApplet() {
         }
     }
 
+    var lastTime = 0
     override fun draw() {
+        val now = millis()
+        val delta = ( now - lastTime)/1000.0
+        lastTime = now
 
-        world.stepSimulation()
-        render(world.elapsedSec)
+        world.stepSimulation(delta)
+        render()
     }
 
 
-    private fun render(elapsedSec: Long) {
+    private fun render() {
         background(200f)
         for (robot in world.robots) {
-            pushMatrix()
+            pushMatrix() // Unfortunately, no one can be told what the matrix is.  You have to see it for yourself.
             translate(robot.x.toFloat(), robot.y.toFloat())
             rotate(robot.r.toFloat())
             translate(-robot.xSize.toFloat() / 2f, -robot.ySize.toFloat() / 2f)
@@ -100,7 +104,7 @@ class Simulator : PApplet() {
             popMatrix()
         }
 
-        text("${world.currentGameState.name} - ${elapsedSec}", 10f, 10f)
+        text("${world.currentGameState.name} - ${world.elapsedSec.toLong()}", 10f, 10f)
     }
 
 }
