@@ -12,6 +12,11 @@ class Or : Command {
         this.commands = commandList
     }
 
+    override fun firstRun() {
+        commands.forEach { it.firstRun() }
+    }
+
+
     override fun execute(dt: Double): Command? {
 
         if (commands.isEmpty()) {
@@ -25,6 +30,9 @@ class Or : Command {
         return this
     }
 
+    override fun cleanUp() {
+        commands.forEach { it.cleanUp() }
+    }
 
     override fun getMessage(): String {
         return commands.first().getMessage()

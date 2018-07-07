@@ -57,8 +57,8 @@ class World(
 
                 // TODO: drifting?
                 // add to encoders
-                lEncode.distance += (v + rv * lEncode.rotDist) * dt
-                rEncode.distance += (v + rv * rEncode.rotDist) * dt
+                lEncode.rotation += (v + rv * lEncode.rotDist) * dt
+                rEncode.rotation += (v + rv * rEncode.rotDist) * dt
 
                 r += rv * dt
                 y += Math.sin(r) * v * dt

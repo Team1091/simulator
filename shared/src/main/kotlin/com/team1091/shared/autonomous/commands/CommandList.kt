@@ -14,6 +14,10 @@ class CommandList : Command {
         this.commands = commandList
     }
 
+    override fun firstRun() {
+        this.commands.first().firstRun()
+    }
+
     override fun execute(dt: Double): Command? {
 
         if (commands.isEmpty()) {
@@ -25,16 +29,26 @@ class CommandList : Command {
         val next = first.execute(dt)
 
         if (next == null) {
+            first.cleanUp()
+
             // Current command is done, go to the next
             if (commands.size == 1)
                 return null // List done
 
             commands.removeAt(0)
+            commands[0].firstRun()
+
         } else if (next !== first) {
             // Replace current command
+            commands[0].cleanUp()
             commands[0] = next
+            commands[0].firstRun()
         }
         return this
+    }
+
+    override fun cleanUp() {
+
     }
 
     override fun getMessage(): String {

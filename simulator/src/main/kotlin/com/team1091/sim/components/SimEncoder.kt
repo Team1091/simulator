@@ -4,14 +4,17 @@ import com.team1091.shared.components.IEncoder
 
 class SimEncoder(val rotDist: Double) : IEncoder {
 
-    var distance: Double = 0.0
+    var rotation: Double = 0.0
 
     override fun reset() {
-        distance = 0.0
+        rotation = 0.0
     }
 
-    override fun get(): Int {
-        return distance.toInt()
+    override fun get(): Double {
+        return rotation
     }
 
+    override fun getDistance(): Double {
+        return rotation // times how many clicks per unit of distance?
+    }
 }

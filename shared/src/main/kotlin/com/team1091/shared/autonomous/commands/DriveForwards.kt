@@ -6,12 +6,12 @@ class DriveForwards(val components: RobotComponents, val distance: Double) : Com
 
 
     override fun firstRun() {
-        components.encoderL.reset()
+        components.leftEncoder.reset()
     }
 
     override fun execute(dt: Double): Command? {
 
-        if (components.encoderL.get() < distance) {
+        if (components.leftEncoder.get() < distance) {
             components.drive.arcadeDrive(1.0, 0.0)
             return this
         }

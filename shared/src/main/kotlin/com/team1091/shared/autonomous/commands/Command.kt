@@ -2,9 +2,9 @@ package com.team1091.shared.autonomous.commands
 
 interface Command {
 
-    fun firstRun() {}
+    fun firstRun()
     fun execute(dt: Double): Command?
-    fun cleanUp() {}
+    fun cleanUp()
 
     fun getMessage(): String {
         return this.javaClass.toString()

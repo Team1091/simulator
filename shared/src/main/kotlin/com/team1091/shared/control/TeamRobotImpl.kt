@@ -1,6 +1,8 @@
 package com.team1091.shared.control
 
+import com.team1091.shared.autonomous.commands.CommandList
 import com.team1091.shared.autonomous.commands.DriveForwards
+import com.team1091.shared.autonomous.commands.Turn
 import com.team1091.shared.components.IDrive
 import com.team1091.shared.components.IEncoder
 import com.team1091.shared.components.IGameController
@@ -10,8 +12,8 @@ import com.team1091.shared.system.AutonomousSystem
 class RobotComponents(
         val gameController: IGameController,
         val drive: IDrive,
-        val encoderL: IEncoder,
-        val encoderR: IEncoder
+        val leftEncoder: IEncoder,
+        val rightEncoder: IEncoder
 )
 
 // This controls our robot in both the sim and real life
@@ -27,7 +29,14 @@ class TeamRobotImpl(
     }
 
     override fun autonomousInit() {
-        autonomousSystem.init(DriveForwards(components, 20.0))
+        autonomousSystem.init(
+                CommandList(
+                        DriveForwards(components, 20.0),
+                        Turn(components, 90.0),
+                        DriveForwards(components, 20.0),
+                        Turn(components, -90.0)
+                )
+        )
 
     }
 
