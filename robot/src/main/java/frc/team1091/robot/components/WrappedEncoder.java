@@ -11,6 +11,10 @@ public class WrappedEncoder implements IEncoder {
         encoder = new Encoder(channelA, channelB);
     }
 
+    public WrappedEncoder(int channelA, int channelB, boolean reverse) {
+        encoder = new Encoder(channelA, channelB, reverse);
+    }
+
     @Override
     public void reset() {
         encoder.reset();

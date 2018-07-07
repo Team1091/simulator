@@ -7,18 +7,25 @@ class AutonomousSystem {
 
     fun init(command: Command) {
         this.command = command
+        this.command?.firstRun()
     }
 
     fun drive(dt: Double) {
 
         if (command == null) {
-
-            log("Completed")
+            log("Autonomous Completed")
             return  // Done with autonomous
         }
 
         log(command!!.getMessage())
-        command = command!!.execute(dt)
+        val next = command!!.execute(dt)
+
+        if (next != command) {
+            command!!.cleanUp()
+            next?.firstRun()
+        }
+
+        command = next
     }
 
     private fun log(message: String) {

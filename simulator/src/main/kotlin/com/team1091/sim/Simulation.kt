@@ -3,7 +3,6 @@ package com.team1091.sim
 import com.studiohartman.jamepad.ControllerManager
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
-import com.team1091.shared.math.Vec2d
 import com.team1091.sim.components.SimController
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
@@ -25,25 +24,31 @@ class Simulator : PApplet() {
         val reverse = Math.PI
 
         val robots = Array(6) { id ->
-            val drive = SimDrive()
-            val right = id >= 3
 
+            val right = id >= 3
             val xPos = if (right) 1100.0 else 100.0
             val yPos = 100.0 + 200.0 * (id % 3)
             val rotation = if (right) reverse else 0.0
 
+            val lEncoder = SimEncoder(20.0)
+            val rEncoder = SimEncoder(-20.0)
+            val drive = SimDrive()
+
             val rc = RobotComponents(
                     SimController(controllers, id),
                     drive,
-                    SimEncoder(Vec2d(-20.0, -20.0)),
-                    SimEncoder(Vec2d(20.0, -20.0))
+                    lEncoder,
+                    rEncoder
             )
 
             SimRobot(xPos, yPos, 0.0,
                     rotation, 0.0,
                     25.0, 30.0,
                     TeamRobotImpl(rc),
-                    drive)
+                    drive,
+                    lEncoder,
+                    rEncoder
+            )
         }
 
         world = World(

@@ -27,7 +27,7 @@ class TeamRobotImpl(
     }
 
     override fun autonomousInit() {
-        autonomousSystem.init(DriveForwards(components))
+        autonomousSystem.init(DriveForwards(components, 20.0))
 
     }
 

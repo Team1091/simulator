@@ -15,7 +15,7 @@ class World(
     // Runs the sim
     fun stepSimulation() {
         elapsedSec = (System.currentTimeMillis() - startTime) / 1000
-
+        val dt = 0.1
 
         when (currentGameState) {
             Period.PREMATCH -> {
@@ -47,21 +47,22 @@ class World(
                     Period.DISABLED -> teamRobot.disabledPeriodic()
                 }
 
-                // velocity - need to add accelerations from the drive to the
-                v += drive.linearAccel.toFloat()
-                rv += drive.rotationalAccel.toFloat()
+                // velocity - need to add accelerations from the drive to the velocity
+                v += drive.linearAccel * dt
+                rv += drive.rotationalAccel * dt
 
-                // linear friction - limits velocity in any direction.  More friction in ways against the wheel
-                v = moveToward(v, 0.0, 0.2)
-
-                // rotational friction
-                rv = moveToward(rv, 0.0, 0.05)
+                // limits velocity in any direction.  More friction in ways against the wheel
+                v = moveToward(v, 0.0, 0.5 * dt)
+                rv = moveToward(rv, 0.0, 0.5 * dt)
 
                 // TODO: drifting?
+                // add to encoders
+                lEncode.distance += (v + rv * lEncode.rotDist) * dt
+                rEncode.distance += (v + rv * rEncode.rotDist) * dt
 
-                r += rv
-                y += Math.sin(r) * v
-                x += Math.cos(r) * v
+                r += rv * dt
+                y += Math.sin(r) * v * dt
+                x += Math.cos(r) * v * dt
 
                 // TODO: ramming walls
                 if (x < 0) {
@@ -83,5 +84,7 @@ class World(
             }
 
         }
+        //println("r:${robots.first().rEncode.get()} l:${robots.first().lEncode.get()}")
+
     }
 }
