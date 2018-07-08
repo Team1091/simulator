@@ -18,7 +18,7 @@ class SimRobot(
         val teamRobot: TeamRobot,
 
         // val mass:Double,
-
+        val alliance: Alliance,
         // we need to read the drive instructions out to simulate them.
         // Would probably be more efficient to get the robotComponents here,
         // but its wrapped in an interface and we need the concrete class

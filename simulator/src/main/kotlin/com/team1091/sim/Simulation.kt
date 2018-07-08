@@ -22,6 +22,8 @@ class Simulator : PApplet() {
         controllers.initSDLGamepad()
 
         val reverse = Math.PI
+        val red = Alliance("red", color(255f, 0f, 0f))
+        val blue = Alliance("blue", color(0f, 0f, 255f))
 
         val robots = Array(6) { id ->
 
@@ -45,6 +47,7 @@ class Simulator : PApplet() {
                     rotation, 0.0,
                     25.0, 30.0,
                     TeamRobotImpl(rc),
+                    if (right) red else blue,
                     // These are needed to simulate its position.  We may just want to read them from the rc though
                     drive,
                     lEncoder,
@@ -66,6 +69,7 @@ class Simulator : PApplet() {
     }
 
     override fun keyPressed() {
+        // TODO: this should set the controller axis
         when (key) {
             'w' -> {
                 world.robots[0].v += 0.5f
@@ -95,14 +99,29 @@ class Simulator : PApplet() {
 
     private fun render() {
         background(200f)
+        pushMatrix()
+        // shift from camera
+        //translate(width.toFloat()/2f,height.toFloat()/2f)
+        translate(20f, 20f)
+//        translate((world.fieldXSize / 2.0).toFloat(), (world.fieldYSize / 2.0).toFloat())
+        scale(1.75f)
+
+        // draw everything
+        fill(100f)
+        rect(0f, 0f, world.fieldXSize.toFloat(), world.fieldYSize.toFloat())
+
+
         for (robot in world.robots) {
             pushMatrix() // Unfortunately, no one can be told what the matrix is.  You have to see it for yourself.
             translate(robot.x.toFloat(), robot.y.toFloat())
             rotate(robot.r.toFloat())
             translate(-robot.xSize.toFloat() / 2f, -robot.ySize.toFloat() / 2f)
+
+            fill(robot.alliance.color)
             rect(0f, 0f, robot.xSize.toFloat(), robot.ySize.toFloat())
             popMatrix()
         }
+        popMatrix()
 
         text("${world.currentGameState.name} - ${world.elapsedSec.toLong()}", 10f, 10f)
     }
