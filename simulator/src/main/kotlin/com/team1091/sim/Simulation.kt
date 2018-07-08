@@ -45,6 +45,7 @@ class Simulator : PApplet() {
                     rotation, 0.0,
                     25.0, 30.0,
                     TeamRobotImpl(rc),
+                    // These are needed to simulate its position.  We may just want to read them from the rc though
                     drive,
                     lEncoder,
                     rEncoder
@@ -52,8 +53,7 @@ class Simulator : PApplet() {
         }
 
         world = World(
-                robots = robots,
-                startTime = System.currentTimeMillis()
+                robots = robots
         )
     }
 
@@ -85,7 +85,7 @@ class Simulator : PApplet() {
     var lastTime = 0
     override fun draw() {
         val now = millis()
-        val delta = ( now - lastTime)/1000.0
+        val delta = (now - lastTime) / 1000.0
         lastTime = now
 
         world.stepSimulation(delta)

@@ -5,15 +5,14 @@ import com.team1091.shared.math.moveToward
 class World(
         val fieldXSize: Double = 650.0,
         val fieldYSize: Double = 320.0,
-        val robots: Array<SimRobot>,
-        val startTime: Long
+        val robots: Array<SimRobot>
 ) {
 
     var currentGameState: Period = Period.PREMATCH
     var elapsedSec: Double = 0.0
 
     // Runs the sim
-    fun stepSimulation(dt:Double = 0.1) {
+    fun stepSimulation(dt: Double = 0.1) {
         elapsedSec += dt
 
         when (currentGameState) {
