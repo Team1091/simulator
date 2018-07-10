@@ -28,8 +28,8 @@ class Simulator : PApplet() {
         val robots = Array(6) { id ->
 
             val right = id >= 3
-            val xPos = if (right) 1100.0 else 100.0
-            val yPos = 100.0 + 200.0 * (id % 3)
+            val xPos = if (right) (650.0 - 15.0) else 15.0
+            val yPos = 50.0 + 100.0 * (id % 3)
             val rotation = if (right) reverse else 0.0
 
             val lEncoder = SimEncoder(20.0)
@@ -123,6 +123,7 @@ class Simulator : PApplet() {
         }
         popMatrix()
 
+        fill(0f)
         text("${world.currentGameState.name} - ${world.elapsedSec.toLong()}", 10f, 10f)
     }
 

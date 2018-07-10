@@ -8,7 +8,7 @@ class Turn(val components: RobotComponents, turnDegrees: Double) : Command {
     val isTurnRight: Boolean
 
     init {
-        requiredTurnDistance = Math.abs(turnDegrees / 360.0) * (29 * Math.PI)
+        requiredTurnDistance = Math.abs(turnDegrees / 360.0) * (25 * Math.PI)
         isTurnRight = turnDegrees > 0
     }
 
