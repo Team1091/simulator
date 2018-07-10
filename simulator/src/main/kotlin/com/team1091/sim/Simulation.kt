@@ -34,7 +34,7 @@ class Simulator : PApplet() {
 
             val lEncoder = SimEncoder(20.0)
             val rEncoder = SimEncoder(-20.0)
-            val drive = SimDrive()
+            val drive = SimDrive(20.0, 5.0)
 
             val rc = RobotComponents(
                     SimController(controllers, id),
