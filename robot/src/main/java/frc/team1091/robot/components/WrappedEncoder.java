@@ -5,14 +5,17 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class WrappedEncoder implements IEncoder {
 
-    private Encoder encoder;
+    private final Encoder encoder;
+    private final double multiplier;
 
     public WrappedEncoder(int channelA, int channelB) {
         encoder = new Encoder(channelA, channelB);
+        multiplier = 1.0;
     }
 
-    public WrappedEncoder(int channelA, int channelB, boolean reverse) {
+    public WrappedEncoder(int channelA, int channelB, boolean reverse, double multiplier) {
         encoder = new Encoder(channelA, channelB, reverse);
+        this.multiplier = multiplier;
     }
 
     @Override
@@ -21,7 +24,12 @@ public class WrappedEncoder implements IEncoder {
     }
 
     @Override
-    public int get() {
+    public double get() {
         return encoder.get();
+    }
+
+    @Override
+    public double getDistance() {
+        return encoder.get() * multiplier;
     }
 }

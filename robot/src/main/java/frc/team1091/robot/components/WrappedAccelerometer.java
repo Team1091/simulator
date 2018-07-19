@@ -7,7 +7,7 @@ public class WrappedAccelerometer implements IAccelerometer {
 
     private BuiltInAccelerometer builtInAccelerometer;
 
-    WrappedAccelerometer(BuiltInAccelerometer builtInAccelerometer) {
+    public WrappedAccelerometer(BuiltInAccelerometer builtInAccelerometer) {
         this.builtInAccelerometer = builtInAccelerometer;
     }
 

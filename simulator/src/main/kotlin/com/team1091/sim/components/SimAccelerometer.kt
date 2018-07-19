@@ -4,9 +4,9 @@ import com.team1091.shared.components.IAccelerometer
 
 
 class SimAccelerometer(
-        private var x: Double,
-        private var y: Double,
-        private var z: Double
+        private var x: Double = 0.0,
+        private var y: Double = 0.0,
+        private var z: Double = -1.0
 ) : IAccelerometer {
 
     override fun getX(): Double = x

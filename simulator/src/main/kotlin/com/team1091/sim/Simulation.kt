@@ -3,6 +3,7 @@ package com.team1091.sim
 import com.studiohartman.jamepad.ControllerManager
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
+import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimController
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
@@ -32,15 +33,12 @@ class Simulator : PApplet() {
             val yPos = 50.0 + 100.0 * (id % 3)
             val rotation = if (right) reverse else 0.0
 
-            val lEncoder = SimEncoder(20.0)
-            val rEncoder = SimEncoder(-20.0)
-            val drive = SimDrive(20.0, 5.0)
-
             val rc = RobotComponents(
                     SimController(controllers, id),
-                    drive,
-                    lEncoder,
-                    rEncoder
+                    SimDrive(20.0, 5.0),
+                    SimEncoder(20.0),
+                    SimEncoder(-20.0),
+                    SimAccelerometer()
             )
 
             SimRobot(xPos, yPos, 0.0,
@@ -48,10 +46,7 @@ class Simulator : PApplet() {
                     25.0, 30.0,
                     TeamRobotImpl(rc),
                     if (right) red else blue,
-                    // These are needed to simulate its position.  We may just want to read them from the rc though
-                    drive,
-                    lEncoder,
-                    rEncoder
+                    rc // These are needed to simulate its position.
             )
         }
 
@@ -68,26 +63,28 @@ class Simulator : PApplet() {
         fill(120f, 50f, 240f)
     }
 
-    override fun keyPressed() {
-        // TODO: this should set the controller axis
-        when (key) {
-            'w' -> {
-                world.robots[0].v += 0.5f
-            }
-            's' -> {
-                world.robots[0].v -= 0.5f
-            }
-            'a' -> {
-                world.robots[0].rv -= 0.1f
-            }
-            'd' -> {
-                world.robots[0].rv += 0.1f
-            }
-        }
-    }
+//    fun keyboard() {
+//        // TODO: this should set the controller axis
+//
+//        val simController = world.robots[0].rc.gameController
+//
+//        simController. v += 0.5f
+//            }
+//            's' -> {
+//                world.robots[0].v -= 0.5f
+//            }
+//            'a' -> {
+//                world.robots[0].rv -= 0.1f
+//            }
+//            'd' -> {
+//                world.robots[0].rv += 0.1f
+//            }
+//        }
+//    }
 
     var lastTime = 0
     override fun draw() {
+
         val now = millis()
         val delta = (now - lastTime) / 1000.0
         lastTime = now

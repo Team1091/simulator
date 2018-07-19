@@ -1,6 +1,8 @@
 package com.team1091.sim
 
 import com.team1091.shared.math.moveToward
+import com.team1091.sim.components.SimDrive
+import com.team1091.sim.components.SimEncoder
 
 class World(
         val fieldXSize: Double = 650.0,
@@ -45,6 +47,10 @@ class World(
                     Period.DISABLED -> teamRobot.disabledPeriodic()
                 }
 
+                val drive = (rc.drive as SimDrive)
+                val lEncode = (rc.leftEncoder as SimEncoder)
+                val rEncode = (rc.rightEncoder as SimEncoder)
+
                 // velocity - need to add accelerations from the drive to the velocity
                 v += drive.linearAccel * dt
                 rv += drive.rotationalAccel * dt
@@ -54,7 +60,7 @@ class World(
                 rv = moveToward(rv, 0.0, 0.5 * dt)
 
                 // TODO: drifting?
-                // add to encoders
+
                 lEncode.rotation += (v + rv * lEncode.rotDist) * dt
                 rEncode.rotation += (v + rv * rEncode.rotDist) * dt
 
@@ -66,18 +72,21 @@ class World(
                 if (x < 0) {
                     x = 0.0
                     v = 0.0
+                    rv = 0.0
                 } else if (x > fieldXSize) {
                     x = fieldXSize
                     v = 0.0
+                    rv = 0.0
                 }
                 if (y < 0) {
                     y = 0.0
+                    v = 0.0
+                    rv = 0.0
                 } else if (y > fieldYSize) {
                     y = fieldYSize
                     v = 0.0
+                    rv = 0.0
                 }
-//                x = clamp(x, 0.0, fieldXSize)
-//                y = clamp(y, 0.0, fieldYSize)
 
             }
 

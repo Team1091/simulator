@@ -3,6 +3,7 @@ package com.team1091.sim
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
 import com.team1091.sim.components.DummyController
+import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
 import org.junit.Test
@@ -22,23 +23,23 @@ class SimTest {
 
             val lEncoder = SimEncoder(20.0)
             val rEncoder = SimEncoder(-20.0)
-            val drive = SimDrive()
+            val drive = SimDrive(20.0, 5.0)
 
             val rc = RobotComponents(
                     DummyController(),
                     drive,
                     lEncoder,
-                    rEncoder
+                    rEncoder,
+                    SimAccelerometer()
             )
 
             SimRobot(xPos, yPos, 0.0,
                     rotation, 0.0,
                     25.0, 30.0,
                     TeamRobotImpl(rc),
+                    Alliance("Test", 0),
                     // These are needed to simulate its position.  We may just want to read them from the rc though
-                    drive,
-                    lEncoder,
-                    rEncoder
+                    rc
             )
         }
 

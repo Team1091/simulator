@@ -1,14 +1,13 @@
 package frc.team1091.robot;
 
-import com.team1091.shared.components.IDrive;
-import com.team1091.shared.components.IEncoder;
-import com.team1091.shared.components.IGameController;
 import com.team1091.shared.control.RobotComponents;
 import com.team1091.shared.control.TeamRobot;
 import com.team1091.shared.control.TeamRobotImpl;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
+import frc.team1091.robot.components.WrappedAccelerometer;
 import frc.team1091.robot.components.WrappedDrive;
 import frc.team1091.robot.components.WrappedEncoder;
 import frc.team1091.robot.components.WrappedXBox;
@@ -21,19 +20,15 @@ public class Robot extends IterativeRobot {
         SpeedController scRight = new Victor(1);
 
         // create real components wrapped and send them to the other project
-        IGameController controller = new WrappedXBox(0);
-        IDrive drive = new WrappedDrive(scLeft, scRight);
-
-        IEncoder encoderL = new WrappedEncoder(3, 4);
-        IEncoder encoderR = new WrappedEncoder(5, 6);
 
         // then delegate to our shared code
         teamRobot = new TeamRobotImpl(
                 new RobotComponents(
-                        controller,
-                        drive,
-                        encoderL,
-                        encoderR
+                        new WrappedXBox(0),
+                        new WrappedDrive(scLeft, scRight),
+                        new WrappedEncoder(3, 4),
+                        new WrappedEncoder(5, 6),
+                        new WrappedAccelerometer(new BuiltInAccelerometer())
                 )
         );
     }
