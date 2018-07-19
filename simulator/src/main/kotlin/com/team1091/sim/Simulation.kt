@@ -63,24 +63,6 @@ class Simulator : PApplet() {
         fill(120f, 50f, 240f)
     }
 
-//    fun keyboard() {
-//        // TODO: this should set the controller axis
-//
-//        val simController = world.robots[0].rc.gameController
-//
-//        simController. v += 0.5f
-//            }
-//            's' -> {
-//                world.robots[0].v -= 0.5f
-//            }
-//            'a' -> {
-//                world.robots[0].rv -= 0.1f
-//            }
-//            'd' -> {
-//                world.robots[0].rv += 0.1f
-//            }
-//        }
-//    }
 
     var lastTime = 0
     override fun draw() {

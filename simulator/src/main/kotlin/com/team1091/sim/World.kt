@@ -10,6 +10,11 @@ class World(
         val robots: Array<SimRobot>
 ) {
 
+    // Next step is probably to use an actual physics engine
+    // http://www.gamefromscratch.com/post/2014/09/25/LibGDX-LibGDX-Tutorial-13-Physics-with-Box2D-Part-3-Collisions.aspx
+    // http://www.iforce2d.net/b2dtut/top-down-car
+    // http://thisiswhatiknowabout.blogspot.com/2011/12/jbox2d-tutorial.html
+
     var currentGameState: Period = Period.PREMATCH
     var elapsedSec: Double = 0.0
 
