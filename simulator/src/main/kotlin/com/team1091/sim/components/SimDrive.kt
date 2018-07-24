@@ -1,6 +1,10 @@
 package com.team1091.sim.components
 
 import com.team1091.shared.components.IDrive
+import org.jbox2d.common.Vec2
+import org.jbox2d.dynamics.Body
+import kotlin.math.cos
+import kotlin.math.sin
 
 class SimDrive(val linearForce: Double, val rotationForce: Double) : IDrive {
 
@@ -10,6 +14,19 @@ class SimDrive(val linearForce: Double, val rotationForce: Double) : IDrive {
     override fun arcadeDrive(linear: Double, rotation: Double) {
         this.linearAccel = linearForce * linear
         this.rotationalAccel = rotationForce * rotation
+    }
+
+    fun applyForce(body: Body) {
+
+        // todo: we need to have sliding friction
+
+        //println("${linearAccel} ${rotationalAccel}")
+        body.applyTorque(rotationalAccel.toFloat())
+
+        body.applyForceToCenter(Vec2(
+                cos(body.angle) * linearAccel.toFloat(),
+                sin(body.angle) * linearAccel.toFloat()
+        ))
     }
 
 }

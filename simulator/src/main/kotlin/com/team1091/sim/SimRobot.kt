@@ -2,14 +2,15 @@ package com.team1091.sim
 
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobot
+import org.jbox2d.dynamics.Body
 
 class SimRobot(
+        var body: Body?, // physics
+
+        // Starting pos
         var x: Double,
         var y: Double, // position
-        var v: Double, // linear velocity
-
         var r: Double,  // rotation, angular displacement
-        var rv: Double, // angular velocity
 
         val xSize: Double,
         val ySize: Double,

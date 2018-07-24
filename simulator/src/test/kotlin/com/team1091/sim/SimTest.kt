@@ -33,8 +33,7 @@ class SimTest {
                     SimAccelerometer()
             )
 
-            SimRobot(xPos, yPos, 0.0,
-                    rotation, 0.0,
+            SimRobot(null, xPos, yPos, rotation,
                     25.0, 30.0,
                     TeamRobotImpl(rc),
                     Alliance("Test", 0),
@@ -43,8 +42,9 @@ class SimTest {
             )
         }
 
-        val world = World(
-                robots = robots
+        val world = SimWorld(
+                robots = robots,
+                obstacles = arrayOf()
         )
 
         val stepsPerSec = 10

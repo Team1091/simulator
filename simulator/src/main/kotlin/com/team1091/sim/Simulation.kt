@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 
 
 class Simulator : PApplet() {
-    private val world: World
+    private val simWorld: SimWorld
     private val controllers = ControllerManager()
 
     init {
@@ -35,23 +35,30 @@ class Simulator : PApplet() {
 
             val rc = RobotComponents(
                     SimController(controllers, id),
-                    SimDrive(20.0, 5.0),
+                    SimDrive(100000.0, 1000000.0),
                     SimEncoder(20.0),
                     SimEncoder(-20.0),
                     SimAccelerometer()
             )
 
-            SimRobot(xPos, yPos, 0.0,
-                    rotation, 0.0,
+            SimRobot(null, xPos, yPos,
+                    rotation,
                     25.0, 30.0,
                     TeamRobotImpl(rc),
                     if (right) red else blue,
                     rc // These are needed to simulate its position.
             )
         }
-
-        world = World(
-                robots = robots
+650
+        320
+        simWorld = SimWorld(
+                robots = robots,
+                obstacles = arrayOf(
+                        Obstacle(-25f, 160f, 50f, 320f ), // left
+                        Obstacle(675f, 160f, 50f, 320f ), // right
+                        Obstacle(325f, -25f, 650f, 50f ), // top
+                        Obstacle(325f, 345f, 650f, 50f ) // bottom
+                )
         )
     }
 
@@ -71,7 +78,7 @@ class Simulator : PApplet() {
         val delta = (now - lastTime) / 1000.0
         lastTime = now
 
-        world.stepSimulation(delta)
+        simWorld.stepSimulation(delta)
         render()
     }
 
@@ -80,30 +87,30 @@ class Simulator : PApplet() {
         background(200f)
         pushMatrix()
         // shift from camera
-        //translate(width.toFloat()/2f,height.toFloat()/2f)
         translate(20f, 20f)
-//        translate((world.fieldXSize / 2.0).toFloat(), (world.fieldYSize / 2.0).toFloat())
         scale(1.75f)
 
         // draw everything
         fill(100f)
-        rect(0f, 0f, world.fieldXSize.toFloat(), world.fieldYSize.toFloat())
+        rect(0f, 0f, simWorld.fieldXSize.toFloat(), simWorld.fieldYSize.toFloat())
 
+        for (robot in simWorld.robots) {
+            val body = robot.body
+            if (body != null) {
+                pushMatrix() // Unfortunately, no one can be told what the matrix is.  You have to see it for yourself.
+                translate(body.position.x, body.position.y)
+                rotate(body.angle)
+                translate(-robot.xSize.toFloat() / 2f, -robot.ySize.toFloat() / 2f)
 
-        for (robot in world.robots) {
-            pushMatrix() // Unfortunately, no one can be told what the matrix is.  You have to see it for yourself.
-            translate(robot.x.toFloat(), robot.y.toFloat())
-            rotate(robot.r.toFloat())
-            translate(-robot.xSize.toFloat() / 2f, -robot.ySize.toFloat() / 2f)
-
-            fill(robot.alliance.color)
-            rect(0f, 0f, robot.xSize.toFloat(), robot.ySize.toFloat())
-            popMatrix()
+                fill(robot.alliance.color)
+                rect(0f, 0f, robot.xSize.toFloat(), robot.ySize.toFloat())
+                popMatrix()
+            }
         }
         popMatrix()
 
         fill(0f)
-        text("${world.currentGameState.name} - ${world.elapsedSec.toLong()}", 10f, 10f)
+        text("${simWorld.currentGameState.name} - ${simWorld.elapsedSec.toLong()}", 10f, 10f)
     }
 
 }

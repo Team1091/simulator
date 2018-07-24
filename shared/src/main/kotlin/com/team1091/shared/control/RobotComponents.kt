@@ -11,5 +11,5 @@ class RobotComponents(
         val drive: IDrive,
         val leftEncoder: IEncoder,
         val rightEncoder: IEncoder,
-        val accelerometer:IAccelerometer
+        val accelerometer: IAccelerometer
 )
