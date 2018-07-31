@@ -1,19 +1,18 @@
-package com.team1091.sim
+package com.team1091.sim.phys
 
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobot
+import com.team1091.sim.Alliance
 import org.jbox2d.dynamics.Body
 
 class SimRobot(
-        var body: Body?, // physics
-
         // Starting pos
-        var x: Double,
-        var y: Double, // position
-        var r: Double,  // rotation, angular displacement
+        var x: Float,
+        var y: Float, // position
+        var r: Float,  // rotation, angular displacement
 
-        val xSize: Double,
-        val ySize: Double,
+        val xSize: Float,
+        val ySize: Float,
 
         val teamRobot: TeamRobot,
 
@@ -21,4 +20,8 @@ class SimRobot(
         val alliance: Alliance,
         // we need to read the drive instructions out to simulate them.
         val rc: RobotComponents
-)
+) {
+    lateinit var body: Body
+}
+
+

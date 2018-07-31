@@ -4,8 +4,8 @@ import com.team1091.shared.control.RobotComponents
 
 class Turn(val components: RobotComponents, turnDegrees: Double) : Command {
 
-    val requiredTurnDistance: Double
-    val isTurnRight: Boolean
+    private val requiredTurnDistance: Double
+    private val isTurnRight: Boolean
 
     init {
         requiredTurnDistance = Math.abs(turnDegrees / 360.0) * (25 * Math.PI)

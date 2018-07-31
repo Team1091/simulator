@@ -18,7 +18,8 @@ class SimDrive(val linearForce: Double, val rotationForce: Double) : IDrive {
 
     fun applyForce(body: Body) {
 
-        // todo: we need to have sliding friction
+        // TODO: limit velocity in any direction.  More friction in ways against the wheel
+        // Todo: we need to have sliding friction.  Rolling forwards is easier than sliding
 
         //println("${linearAccel} ${rotationalAccel}")
         body.applyTorque(rotationalAccel.toFloat())

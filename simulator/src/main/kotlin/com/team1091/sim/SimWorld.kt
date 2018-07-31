@@ -2,6 +2,9 @@ package com.team1091.sim
 
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
+import com.team1091.sim.phys.GamePiece
+import com.team1091.sim.phys.Obstacle
+import com.team1091.sim.phys.SimRobot
 import org.jbox2d.collision.shapes.PolygonShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.BodyDef
@@ -9,15 +12,14 @@ import org.jbox2d.dynamics.BodyType
 import org.jbox2d.dynamics.FixtureDef
 import org.jbox2d.dynamics.World
 
-//import org.jb
-
-class Obstacle(val x: Float, val y: Float, val w: Float, val h: Float)
 
 class SimWorld(
         val fieldXSize: Double = 650.0,
         val fieldYSize: Double = 320.0,
         val robots: Array<SimRobot>,
-        obstacles: Array<Obstacle>
+        val gamePieces: Array<GamePiece>, // gamePiece
+        val obstacles: Array<Obstacle> // static walls
+
 ) {
 
     // What is all this physics?
@@ -29,7 +31,7 @@ class SimWorld(
     // fixture -> Attaches shapes to body.
     // joint - Connects 2 bodies.
 
-    val world: World
+    private val world: World
 
     init {
         // create physics shit
@@ -44,18 +46,18 @@ class SimWorld(
             body.position.x = it.x
             body.position.y = it.y
 
-            val shape = PolygonShape();
-            shape.setAsBox(it.w / 2f, it.h / 2f)
+            val shape = PolygonShape()
+            shape.setAsBox(it.xSize / 2f, it.ySize / 2f)
 
             body.createFixture(shape, 1f)
+            it.body = body
         }
 
-        robots.map {
-
+        gamePieces.forEach {
             val bodyDef = BodyDef()
-            bodyDef.position.x = it.x.toFloat()
-            bodyDef.position.y = it.y.toFloat()
-            bodyDef.angle = it.r.toFloat()
+            bodyDef.position.x = it.x
+            bodyDef.position.y = it.y
+            bodyDef.angle = it.r
             bodyDef.type = BodyType.DYNAMIC
 
             bodyDef.linearDamping = 0.8f
@@ -65,7 +67,35 @@ class SimWorld(
             val body = world.createBody(bodyDef)
 
             val shape = PolygonShape()
-            shape.setAsBox(it.xSize.toFloat() / 2f, it.ySize.toFloat() / 2f)
+            shape.setAsBox(it.xSize / 2f, it.ySize / 2f)
+
+            val fixtureDef = FixtureDef()
+            fixtureDef.shape = shape
+            fixtureDef.friction = 0.3f
+            fixtureDef.restitution = 0.5f
+            fixtureDef.density = 1.0f // mass is calculated from this * area
+
+            body.createFixture(fixtureDef)
+
+            it.body = body
+        }
+
+        robots.forEach {
+
+            val bodyDef = BodyDef()
+            bodyDef.position.x = it.x
+            bodyDef.position.y = it.y
+            bodyDef.angle = it.r
+            bodyDef.type = BodyType.DYNAMIC
+
+            bodyDef.linearDamping = 0.8f
+            bodyDef.angularDamping = 0.8f
+            bodyDef.bullet = true // fast moving
+
+            val body = world.createBody(bodyDef)
+
+            val shape = PolygonShape()
+            shape.setAsBox(it.xSize / 2f, it.ySize / 2f)
 
             val fixtureDef = FixtureDef()
             fixtureDef.shape = shape
@@ -125,20 +155,10 @@ class SimWorld(
         }
 
         // TODO: add each robot's drive's acceleration
-
         for (robot in robots) {
-            // velocity - need to add accelerations from the drive to the velocity
-            //                v += drive.linearAccel * dt
-            //                rv += drive.rotationalAccel * dt
-
-            val body = robot.body
-            if (body != null) {
-                val drive = (robot.rc.drive as SimDrive)
-                drive.applyForce(body)
-            }
+            val drive = (robot.rc.drive as SimDrive)
+            drive.applyForce(robot.body)
         }
-
-
 
         world.step(dt.toFloat(), 5, 3)
 
@@ -146,52 +166,16 @@ class SimWorld(
         for (robot in robots) {
             with(robot) {
 
-                //
                 val lEncode = (rc.leftEncoder as SimEncoder)
                 val rEncode = (rc.rightEncoder as SimEncoder)
 
-                val v = body?.linearVelocity?.length() ?: 0f
-                val rv = body?.angularVelocity ?: 0f
+                val v = body.linearVelocity.length()
+                val rv = body.angularVelocity
 
                 lEncode.rotation += (v + rv * lEncode.rotDist) * dt
                 rEncode.rotation += (v + rv * rEncode.rotDist) * dt
             }
         }
-
-//
-//                // limits velocity in any direction.  More friction in ways against the wheel
-//                v = moveToward(v, 0.0, 0.5 * dt)
-//                rv = moveToward(rv, 0.0, 0.5 * dt)
-//
-//                // TODO: drifting?
-//
-
-//
-//                r += rv * dt
-//                y += Math.sin(r) * v * dt
-//                x += Math.cos(r) * v * dt
-//
-//                // TODO: ramming walls
-//                if (x < 0) {
-//                    x = 0.0
-//                    v = 0.0
-//                    rv = 0.0
-//                } else if (x > fieldXSize) {
-//                    x = fieldXSize
-//                    v = 0.0
-//                    rv = 0.0
-//                }
-//                if (y < 0) {
-//                    y = 0.0
-//                    v = 0.0
-//                    rv = 0.0
-//                } else if (y > fieldYSize) {
-//                    y = fieldYSize
-//                    v = 0.0
-//                    rv = 0.0
-//                }
-
-//            }
 
     }
     //println("r:${robots.first().rEncode.get()} l:${robots.first().lEncode.get()}")

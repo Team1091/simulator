@@ -6,6 +6,7 @@ import com.team1091.sim.components.DummyController
 import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
+import com.team1091.sim.phys.SimRobot
 import org.junit.Test
 
 class SimTest {
@@ -13,13 +14,13 @@ class SimTest {
     @Test
     fun testThatWorldWorks() {
 
-        val reverse = Math.PI
+        val reverse = Math.PI.toFloat()
         val robots = Array(6) { id ->
 
             val right = id >= 3
-            val xPos = if (right) 1100.0 else 100.0
-            val yPos = 100.0 + 200.0 * (id % 3)
-            val rotation = if (right) reverse else 0.0
+            val xPos = if (right) 1100f else 100f
+            val yPos = 100f + 200f * (id % 3)
+            val rotation = if (right) reverse else 0f
 
             val lEncoder = SimEncoder(20.0)
             val rEncoder = SimEncoder(-20.0)
@@ -33,8 +34,8 @@ class SimTest {
                     SimAccelerometer()
             )
 
-            SimRobot(null, xPos, yPos, rotation,
-                    25.0, 30.0,
+            SimRobot(xPos, yPos, rotation,
+                    25f, 30f,
                     TeamRobotImpl(rc),
                     Alliance("Test", 0),
                     // These are needed to simulate its position.  We may just want to read them from the rc though
@@ -44,6 +45,7 @@ class SimTest {
 
         val world = SimWorld(
                 robots = robots,
+                gamePieces = arrayOf(),
                 obstacles = arrayOf()
         )
 
