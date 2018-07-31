@@ -7,7 +7,12 @@ import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimController
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
+import com.team1091.sim.phys.GamePiece
+import com.team1091.sim.phys.Obstacle
+import com.team1091.sim.phys.SimRobot
+import org.jbox2d.dynamics.Body
 import processing.core.PApplet
+import java.awt.Color
 
 
 fun main(args: Array<String>) {
@@ -16,42 +21,57 @@ fun main(args: Array<String>) {
 
 
 class Simulator : PApplet() {
-    private val world: World
+    private val simWorld: SimWorld
     private val controllers = ControllerManager()
 
     init {
         controllers.initSDLGamepad()
 
-        val reverse = Math.PI
+        val reverse = Math.PI.toFloat()
         val red = Alliance("red", color(255f, 0f, 0f))
         val blue = Alliance("blue", color(0f, 0f, 255f))
 
         val robots = Array(6) { id ->
 
             val right = id >= 3
-            val xPos = if (right) (650.0 - 15.0) else 15.0
-            val yPos = 50.0 + 100.0 * (id % 3)
-            val rotation = if (right) reverse else 0.0
+            val xPos = if (right) (650f - 15f) else 15f
+            val yPos = 50f + 100f * (id % 3)
+            val rotation = if (right) reverse else 0f
 
             val rc = RobotComponents(
                     SimController(controllers, id),
-                    SimDrive(20.0, 5.0),
+                    SimDrive(100000.0, 1000000.0),
                     SimEncoder(20.0),
                     SimEncoder(-20.0),
                     SimAccelerometer()
             )
 
-            SimRobot(xPos, yPos, 0.0,
-                    rotation, 0.0,
-                    25.0, 30.0,
+            SimRobot(xPos, yPos,
+                    rotation,
+                    25f, 30f,
                     TeamRobotImpl(rc),
                     if (right) red else blue,
                     rc // These are needed to simulate its position.
             )
         }
 
-        world = World(
-                robots = robots
+        simWorld = SimWorld(
+                robots = robots,
+                gamePieces = arrayOf(
+                        GamePiece(100f, 100f, 0f, 15f, 15f),
+                        GamePiece(100f, 150f, 0f, 15f, 15f),
+                        GamePiece(100f, 200f, 0f, 15f, 15f),
+
+                        GamePiece(550f, 100f, 0f, 15f, 15f),
+                        GamePiece(550f, 150f, 0f, 15f, 15f),
+                        GamePiece(550f, 200f, 0f, 15f, 15f)
+                ),
+                obstacles = arrayOf(
+                        Obstacle(-25f, 160f, 50f, 320f), // left
+                        Obstacle(675f, 160f, 50f, 320f), // right
+                        Obstacle(325f, -25f, 650f, 50f), // top
+                        Obstacle(325f, 345f, 650f, 50f) // bottom
+                )
         )
     }
 
@@ -63,33 +83,15 @@ class Simulator : PApplet() {
         fill(120f, 50f, 240f)
     }
 
-//    fun keyboard() {
-//        // TODO: this should set the controller axis
-//
-//        val simController = world.robots[0].rc.gameController
-//
-//        simController. v += 0.5f
-//            }
-//            's' -> {
-//                world.robots[0].v -= 0.5f
-//            }
-//            'a' -> {
-//                world.robots[0].rv -= 0.1f
-//            }
-//            'd' -> {
-//                world.robots[0].rv += 0.1f
-//            }
-//        }
-//    }
 
-    var lastTime = 0
+    private var lastTime = 0
     override fun draw() {
 
         val now = millis()
         val delta = (now - lastTime) / 1000.0
         lastTime = now
 
-        world.stepSimulation(delta)
+        simWorld.stepSimulation(delta)
         render()
     }
 
@@ -98,30 +100,50 @@ class Simulator : PApplet() {
         background(200f)
         pushMatrix()
         // shift from camera
-        //translate(width.toFloat()/2f,height.toFloat()/2f)
         translate(20f, 20f)
-//        translate((world.fieldXSize / 2.0).toFloat(), (world.fieldYSize / 2.0).toFloat())
         scale(1.75f)
 
         // draw everything
         fill(100f)
-        rect(0f, 0f, world.fieldXSize.toFloat(), world.fieldYSize.toFloat())
+        rect(0f, 0f, simWorld.fieldXSize.toFloat(), simWorld.fieldYSize.toFloat())
 
-
-        for (robot in world.robots) {
-            pushMatrix() // Unfortunately, no one can be told what the matrix is.  You have to see it for yourself.
-            translate(robot.x.toFloat(), robot.y.toFloat())
-            rotate(robot.r.toFloat())
-            translate(-robot.xSize.toFloat() / 2f, -robot.ySize.toFloat() / 2f)
-
-            fill(robot.alliance.color)
-            rect(0f, 0f, robot.xSize.toFloat(), robot.ySize.toFloat())
-            popMatrix()
+        for (robot in simWorld.robots) {
+            draw(robot.body, robot.xSize, robot.ySize, robot.alliance.color, true)
         }
+
+        for (obstacles in simWorld.obstacles) {
+            draw(obstacles.body, obstacles.xSize, obstacles.ySize, Color.DARK_GRAY.rgb)
+        }
+
+        for (gamePiece in simWorld.gamePieces) {
+            draw(gamePiece.body, gamePiece.xSize, gamePiece.ySize, Color.YELLOW.rgb)
+        }
+
         popMatrix()
 
         fill(0f)
-        text("${world.currentGameState.name} - ${world.elapsedSec.toLong()}", 10f, 10f)
+        text("${simWorld.currentGameState.name} - ${simWorld.elapsedSec.toLong()}", 10f, 10f)
+    }
+
+    private fun draw(body: Body, xSize: Float, ySize: Float, color: Int, facing: Boolean = false) {
+        // Unfortunately, no one can be told what the matrix is.  You have to see it for yourself.
+        pushMatrix()
+
+        translate(body.position.x, body.position.y)
+        rotate(body.angle)
+
+        pushMatrix()
+        translate(-xSize / 2f, -ySize / 2f)
+        fill(color)
+        rect(0f, 0f, xSize, ySize)
+        popMatrix()
+
+        if (facing) {
+            fill(Color.GREEN.rgb)
+            line(0f, 0f, xSize / 2f, 0f)
+            triangle(xSize / 2f, 0f, 0f, -ySize / 2f, 0f, ySize / 2f)
+        }
+        popMatrix()
     }
 
 }

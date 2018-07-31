@@ -2,8 +2,7 @@ package com.team1091.shared.autonomous.commands
 
 import com.team1091.shared.control.RobotComponents
 
-class DriveForwards(val components: RobotComponents, val distance: Double) : Command {
-
+class DriveForwards(private val components: RobotComponents, private val distance: Double) : Command {
 
     override fun firstRun() {
         println("Drive Starting")
