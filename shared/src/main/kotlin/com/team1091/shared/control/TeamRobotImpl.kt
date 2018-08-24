@@ -3,15 +3,27 @@ package com.team1091.shared.control
 import com.team1091.shared.autonomous.commands.CommandList
 import com.team1091.shared.autonomous.commands.DriveForwards
 import com.team1091.shared.autonomous.commands.Turn
+import com.team1091.shared.game.StartingPos
 import com.team1091.shared.system.AutonomousSystem
+import com.team1091.shared.system.PositionSystem
 
 
 // This controls our robot in both the sim and real life
 class TeamRobotImpl(
-        val components: RobotComponents
+        val components: RobotComponents,
+        val startingPos: StartingPos
 ) : TeamRobot {
 
-    private val autonomousSystem: AutonomousSystem = AutonomousSystem()
+    private val autonomousSystem = AutonomousSystem()
+    private val positionSystem = PositionSystem(
+            components.accelerometer,
+            components.gyroscope,
+            startingPos.pos.x,
+            startingPos.pos.y,
+            0.0,
+            0.0,
+            startingPos.rotation
+    )
 
     override fun robotInit() {
 
@@ -30,7 +42,9 @@ class TeamRobotImpl(
     }
 
     override fun autonomousPeriodic() {
-        autonomousSystem.drive(getTime())
+        val dt = getTime()
+        autonomousSystem.drive(dt)
+        positionSystem.integrate(dt)
     }
 
     override fun teleopInit() {

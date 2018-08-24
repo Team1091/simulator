@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Victor;
 import frc.team1091.robot.components.WrappedAccelerometer;
 import frc.team1091.robot.components.WrappedDrive;
 import frc.team1091.robot.components.WrappedEncoder;
+import frc.team1091.robot.components.WrappedGyroscope;
 import frc.team1091.robot.components.WrappedXBox;
 
 public class Robot extends IterativeRobot {
@@ -28,7 +29,8 @@ public class Robot extends IterativeRobot {
                         new WrappedDrive(scLeft, scRight),
                         new WrappedEncoder(3, 4),
                         new WrappedEncoder(5, 6),
-                        new WrappedAccelerometer(new BuiltInAccelerometer())
+                        new WrappedAccelerometer(new BuiltInAccelerometer()),
+                        new WrappedGyroscope(0)
                 )
         );
     }

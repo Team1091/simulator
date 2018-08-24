@@ -1,15 +1,20 @@
 package com.team1091.sim
 
 import com.studiohartman.jamepad.ControllerManager
+import com.team1091.shared.components.IGyroscope
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
+import com.team1091.shared.game.Alliance
+import com.team1091.shared.game.StartingPos
 import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimController
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
+import com.team1091.sim.components.SimGyroscope
 import com.team1091.sim.phys.GamePiece
 import com.team1091.sim.phys.Obstacle
 import com.team1091.sim.phys.SimRobot
+import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.Body
 import processing.core.PApplet
 import java.awt.Color
@@ -27,30 +32,24 @@ class Simulator : PApplet() {
     init {
         controllers.initSDLGamepad()
 
-        val reverse = Math.PI.toFloat()
-        val red = Alliance("red", color(255f, 0f, 0f))
-        val blue = Alliance("blue", color(0f, 0f, 255f))
+        val startingPos = StartingPos.values()
 
         val robots = Array(6) { id ->
 
-            val right = id >= 3
-            val xPos = if (right) (650f - 15f) else 15f
-            val yPos = 50f + 100f * (id % 3)
-            val rotation = if (right) reverse else 0f
+            val start = startingPos[id]
 
             val rc = RobotComponents(
                     SimController(controllers, id),
                     SimDrive(100000.0, 1000000.0),
                     SimEncoder(20.0),
                     SimEncoder(-20.0),
-                    SimAccelerometer()
+                    SimAccelerometer(),
+                    SimGyroscope()
             )
 
-            SimRobot(xPos, yPos,
-                    rotation,
+            SimRobot(start,
                     25f, 30f,
-                    TeamRobotImpl(rc),
-                    if (right) red else blue,
+                    TeamRobotImpl(rc, start),
                     rc // These are needed to simulate its position.
             )
         }
@@ -108,7 +107,7 @@ class Simulator : PApplet() {
         rect(0f, 0f, simWorld.fieldXSize.toFloat(), simWorld.fieldYSize.toFloat())
 
         for (robot in simWorld.robots) {
-            draw(robot.body, robot.xSize, robot.ySize, robot.alliance.color, true)
+            draw(robot.body, robot.xSize, robot.ySize, robot.startingPos.alliance.color, true)
         }
 
         for (obstacles in simWorld.obstacles) {
