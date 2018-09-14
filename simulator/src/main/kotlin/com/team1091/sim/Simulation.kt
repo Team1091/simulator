@@ -49,7 +49,7 @@ class Simulator : PApplet() {
 
             SimRobot(start,
                     25f, 30f,
-                    TeamRobotImpl(rc, start),
+                    TeamRobotImpl(rc),
                     rc // These are needed to simulate its position.
             )
         }
@@ -106,10 +106,13 @@ class Simulator : PApplet() {
         fill(100f)
         rect(0f, 0f, simWorld.fieldXSize.toFloat(), simWorld.fieldYSize.toFloat())
 
+        // Draw all the robots
         for (robot in simWorld.robots) {
             draw(robot.body, robot.xSize, robot.ySize, robot.startingPos.alliance.color, true)
+//            robot.teamRobot
         }
 
+        // Draw all the obstacles
         for (obstacles in simWorld.obstacles) {
             draw(obstacles.body, obstacles.xSize, obstacles.ySize, Color.DARK_GRAY.rgb)
         }

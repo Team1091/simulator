@@ -3,6 +3,7 @@ package frc.team1091.robot;
 import com.team1091.shared.control.RobotComponents;
 import com.team1091.shared.control.TeamRobot;
 import com.team1091.shared.control.TeamRobotImpl;
+import com.team1091.shared.game.StartingPos;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -38,7 +39,9 @@ public class Robot extends IterativeRobot {
     // Delegate everything else to the TeamRobot
     @Override
     public void robotInit() {
-        teamRobot.robotInit();
+        // TODO: get this from the field or dropdown
+        StartingPos pos = StartingPos.BLUE_1;
+        teamRobot.robotInit(pos);
     }
 
     @Override

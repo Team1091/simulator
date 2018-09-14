@@ -1,7 +1,9 @@
 package com.team1091.shared.control
 
+import com.team1091.shared.game.StartingPos
+
 interface TeamRobot {
-    fun robotInit()
+    fun robotInit(startingPos: StartingPos)
 
     fun autonomousInit()
 

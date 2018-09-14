@@ -126,6 +126,7 @@ class SimWorld(
 
         when (currentGameState) {
             Period.PREMATCH -> {
+                robots.forEach { it.teamRobot.robotInit(it.startingPos) }
                 currentGameState = Period.AUTONOMOUS
                 robots.forEach { it.teamRobot.autonomousInit() }
             }

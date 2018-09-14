@@ -30,6 +30,7 @@ class AutonomousSystem {
 
     private fun log(message: String) {
         // TODO: need to pass in logger too
+        println(message)
 //        SmartDashboard.putString("Autonomous", message)
     }
 }

@@ -10,23 +10,24 @@ import com.team1091.shared.system.PositionSystem
 
 // This controls our robot in both the sim and real life
 class TeamRobotImpl(
-        val components: RobotComponents,
-        val startingPos: StartingPos
+        val components: RobotComponents
 ) : TeamRobot {
 
+
     private val autonomousSystem = AutonomousSystem()
-    private val positionSystem = PositionSystem(
-            components.accelerometer,
-            components.gyroscope,
-            startingPos.pos.x,
-            startingPos.pos.y,
-            0.0,
-            0.0,
-            startingPos.rotation
-    )
 
-    override fun robotInit() {
+    private lateinit var positionSystem:PositionSystem
 
+    override fun robotInit(startingPos: StartingPos) {
+        positionSystem = PositionSystem(
+                components.accelerometer,
+                components.gyroscope,
+                startingPos.pos.x,
+                startingPos.pos.y,
+                0.0,
+                0.0,
+                startingPos.rotation
+        )
     }
 
     override fun autonomousInit() {
