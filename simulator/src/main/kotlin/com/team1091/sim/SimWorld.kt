@@ -1,5 +1,6 @@
 package com.team1091.sim
 
+import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
 import com.team1091.sim.phys.GamePiece
@@ -83,9 +84,9 @@ class SimWorld(
         robots.forEach {
 
             val bodyDef = BodyDef()
-            bodyDef.position.x = it.x
-            bodyDef.position.y = it.y
-            bodyDef.angle = it.r
+            bodyDef.position.x = it.startingPos.pos.x.toFloat()
+            bodyDef.position.y = it.startingPos.pos.y.toFloat()
+            bodyDef.angle = it.startingPos.rotation.toFloat()
             bodyDef.type = BodyType.DYNAMIC
 
             bodyDef.linearDamping = 0.8f
@@ -125,6 +126,7 @@ class SimWorld(
 
         when (currentGameState) {
             Period.PREMATCH -> {
+                robots.forEach { it.teamRobot.robotInit(it.startingPos) }
                 currentGameState = Period.AUTONOMOUS
                 robots.forEach { it.teamRobot.autonomousInit() }
             }
@@ -158,6 +160,16 @@ class SimWorld(
         for (robot in robots) {
             val drive = (robot.rc.drive as SimDrive)
             drive.applyForce(robot.body)
+
+            val accelerometer = robot.rc.accelerometer as SimAccelerometer
+
+            val acceleration = robot.body.m_force.mul(1f / robot.body.mass)
+            accelerometer.set(acceleration.x, acceleration.y, -1f)
+
+            // TODO get gyro
+            //
+            // val torque = robot.body.m_torque
+
         }
 
         world.step(dt.toFloat(), 5, 3)

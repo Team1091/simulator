@@ -13,4 +13,10 @@ class SimAccelerometer(
     override fun getY(): Double = y
     override fun getZ(): Double = z
 
+    fun set(x: Float, y: Float, z: Float) {
+        this.x = x.toDouble()
+        this.y = y.toDouble()
+        this.z = z.toDouble()
+    }
+
 }
