@@ -23,8 +23,8 @@ class PositionSystem(
         val aY = accelerometer.getY()
 
         // rotate instantaneous accelerations
-         val aXr= (cos(angle) * aX) - (sin(angle) * aY)
-         val aYr= (sin(angle) * aX) + (cos(angle) * aY)
+        val aXr = (cos(angle) * aX) - (sin(angle) * aY)
+        val aYr = (sin(angle) * aX) + (cos(angle) * aY)
 
         // integrate velocity
         xV += (aXr * dt)

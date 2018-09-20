@@ -8,7 +8,7 @@ public class WrappedGyroscope implements IGyroscope {
     private final AnalogGyro analogGyro;
 
     public WrappedGyroscope(int channel) {
-        if(channel!=0 && channel!=1){
+        if (channel != 0 && channel != 1) {
             throw new RuntimeException("Gyro only works on channels 0 + 1");
         }
 

@@ -2,10 +2,7 @@ package com.team1091.sim.phys
 
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobot
-import com.team1091.shared.game.Alliance
 import com.team1091.shared.game.StartingPos
-import com.team1091.shared.math.Vec2d
-import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.Body
 
 class SimRobot(

@@ -1,11 +1,10 @@
 package com.team1091.sim
 
 import com.studiohartman.jamepad.ControllerManager
-import com.team1091.shared.components.IGyroscope
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
-import com.team1091.shared.game.Alliance
 import com.team1091.shared.game.StartingPos
+import com.team1091.shared.system.PositionSystem
 import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimController
 import com.team1091.sim.components.SimDrive
@@ -14,7 +13,6 @@ import com.team1091.sim.components.SimGyroscope
 import com.team1091.sim.phys.GamePiece
 import com.team1091.sim.phys.Obstacle
 import com.team1091.sim.phys.SimRobot
-import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.Body
 import processing.core.PApplet
 import java.awt.Color
@@ -106,12 +104,6 @@ class Simulator : PApplet() {
         fill(100f)
         rect(0f, 0f, simWorld.fieldXSize.toFloat(), simWorld.fieldYSize.toFloat())
 
-        // Draw all the robots
-        for (robot in simWorld.robots) {
-            draw(robot.body, robot.xSize, robot.ySize, robot.startingPos.alliance.color, true)
-//            robot.teamRobot
-        }
-
         // Draw all the obstacles
         for (obstacles in simWorld.obstacles) {
             draw(obstacles.body, obstacles.xSize, obstacles.ySize, Color.DARK_GRAY.rgb)
@@ -121,10 +113,25 @@ class Simulator : PApplet() {
             draw(gamePiece.body, gamePiece.xSize, gamePiece.ySize, Color.YELLOW.rgb)
         }
 
+        // Draw all the robots
+        for (robot in simWorld.robots) {
+            draw(robot.body, robot.xSize, robot.ySize, robot.startingPos.alliance.color, true)
+            drawLine(((robot.teamRobot as TeamRobotImpl)).positionSystem)
+        }
+
         popMatrix()
 
         fill(0f)
         text("${simWorld.currentGameState.name} - ${simWorld.elapsedSec.toLong()}", 10f, 10f)
+    }
+
+    private fun drawLine(positionSystem: PositionSystem) {
+        pushMatrix()
+//  TODO: this goes out of control
+//        val position = positionSystem.getPos()
+//        translate(position.x.toFloat(), position.y.toFloat())
+//        triangle(10f, 0f, 0f, -10f, 0f, 10f)
+        popMatrix()
     }
 
     private fun draw(body: Body, xSize: Float, ySize: Float, color: Int, facing: Boolean = false) {

@@ -16,7 +16,7 @@ class TeamRobotImpl(
 
     private val autonomousSystem = AutonomousSystem()
 
-    private lateinit var positionSystem:PositionSystem
+    public lateinit var positionSystem: PositionSystem
 
     override fun robotInit(startingPos: StartingPos) {
         positionSystem = PositionSystem(
