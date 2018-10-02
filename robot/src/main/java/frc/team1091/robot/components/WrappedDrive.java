@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class WrappedDrive implements IDrive {
-    private DifferentialDrive differentialDrive;
+    private final DifferentialDrive differentialDrive;
 
     public WrappedDrive(SpeedController scLeft, SpeedController scRight) {
         differentialDrive = new DifferentialDrive(scLeft, scRight);

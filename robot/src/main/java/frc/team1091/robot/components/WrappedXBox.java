@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class WrappedXBox implements IGameController {
 
     // wrap the existing xbox controller
-    private XboxController xbox;
+    private final XboxController xbox;
 
     public WrappedXBox(int port) {
         xbox = new XboxController(port);

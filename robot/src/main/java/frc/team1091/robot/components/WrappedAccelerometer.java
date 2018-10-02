@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 
 public class WrappedAccelerometer implements IAccelerometer {
 
-    private BuiltInAccelerometer builtInAccelerometer;
+    private final BuiltInAccelerometer builtInAccelerometer;
 
     public WrappedAccelerometer(BuiltInAccelerometer builtInAccelerometer) {
         this.builtInAccelerometer = builtInAccelerometer;

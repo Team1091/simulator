@@ -15,7 +15,7 @@ import frc.team1091.robot.components.WrappedGyroscope;
 import frc.team1091.robot.components.WrappedXBox;
 
 public class Robot extends IterativeRobot {
-    private TeamRobot teamRobot;
+    private final TeamRobot teamRobot;
 
     Robot() {
         SpeedController scLeft = new Victor(0);
