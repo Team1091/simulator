@@ -32,13 +32,13 @@ class SimWorld(
     // fixture -> Attaches shapes to body.
     // joint - Connects 2 bodies.
 
-    private val world: World
+    // create physics stuff
+    // in a world with no gravity
+    private val world: World = World(Vec2())
 
     init {
-        // create physics shit
-        world = World(Vec2()) // in a world with no gravity
 
-        // TODO build walls
+        // build walls
         obstacles.forEach {
             val wall = BodyDef()
             wall.type = BodyType.STATIC

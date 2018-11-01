@@ -2,7 +2,7 @@ package com.team1091.shared.autonomous.commands
 
 import com.team1091.shared.control.RobotComponents
 
-class Faatt(val components: RobotComponents) : Command {
+class FullAutonomous(val components: RobotComponents) : Command {
 
     override fun firstRun() {
 

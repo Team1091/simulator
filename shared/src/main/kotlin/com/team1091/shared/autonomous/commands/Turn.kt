@@ -4,13 +4,8 @@ import com.team1091.shared.control.RobotComponents
 
 class Turn(val components: RobotComponents, turnDegrees: Double) : Command {
 
-    private val requiredTurnDistance: Double
-    private val isTurnRight: Boolean
-
-    init {
-        requiredTurnDistance = Math.abs(turnDegrees / 360.0) * (25 * Math.PI)
-        isTurnRight = turnDegrees > 0
-    }
+    private val requiredTurnDistance: Double = Math.abs(turnDegrees / 360.0) * (25 * Math.PI)
+    private val isTurnRight: Boolean = turnDegrees > 0
 
     override fun firstRun() {
         println("Turn Starting")
