@@ -4,6 +4,8 @@ import com.team1091.shared.autonomous.commands.CommandList
 import com.team1091.shared.autonomous.commands.DriveForwards
 import com.team1091.shared.autonomous.commands.Turn
 import com.team1091.shared.game.StartingPos
+import com.team1091.shared.math.degrees
+import com.team1091.shared.math.inches
 import com.team1091.shared.system.AutonomousSystem
 import com.team1091.shared.system.PositionSystem
 
@@ -33,10 +35,10 @@ class TeamRobotImpl(
     override fun autonomousInit() {
         autonomousSystem.init(
                 CommandList(
-                        DriveForwards(components, 20.0),
-                        Turn(components, 90.0),
-                        DriveForwards(components, 20.0),
-                        Turn(components, -90.0)
+                        DriveForwards(components, 20.0.inches),
+                        Turn(components, 90.0.degrees),
+                        DriveForwards(components, 20.0.inches),
+                        Turn(components, (-90.0).degrees)
                 )
         )
 

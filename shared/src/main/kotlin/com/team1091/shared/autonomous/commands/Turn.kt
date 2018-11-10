@@ -1,11 +1,12 @@
 package com.team1091.shared.autonomous.commands
 
 import com.team1091.shared.control.RobotComponents
+import com.team1091.shared.math.Rotation
 
-class Turn(val components: RobotComponents, turnDegrees: Double) : Command {
+class Turn(val components: RobotComponents, turnDegrees: Rotation) : Command {
 
-    private val requiredTurnDistance: Double = Math.abs(turnDegrees / 360.0) * (25 * Math.PI)
-    private val isTurnRight: Boolean = turnDegrees > 0
+    private val requiredTurnDistance: Double = Math.abs(turnDegrees.toDegrees() / 360.0) * (25 * Math.PI)
+    private val isTurnRight: Boolean = turnDegrees.toRadians() > 0
 
     override fun firstRun() {
         println("Turn Starting")
