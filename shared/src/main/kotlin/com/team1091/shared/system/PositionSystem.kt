@@ -8,16 +8,20 @@ import kotlin.math.sin
 class PositionSystem(
         val accelerometer: IAccelerometer,
         val gyroscope: IGyroscope,
+
         private var xP: Double,
         private var yP: Double,
+
         private var xV: Double,
         private var yV: Double,
-        private var r: Double
+
+        private var angle: Double
 ) {
 
     fun integrate(dt: Double) {
 
-        val angle = gyroscope.get()
+        // gyroscope already handles integration
+        angle = gyroscope.get()
 
         val aX = accelerometer.getX()
         val aY = accelerometer.getY()
@@ -36,7 +40,7 @@ class PositionSystem(
 
     }
 
-    fun getPos(): Position = Position(xP, yP, r)
+    fun getPos(): Position = Position(xP, yP, angle)
 
 }
 

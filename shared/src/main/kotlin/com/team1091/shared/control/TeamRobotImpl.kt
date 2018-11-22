@@ -6,6 +6,7 @@ import com.team1091.shared.autonomous.commands.Turn
 import com.team1091.shared.game.StartingPos
 import com.team1091.shared.math.degrees
 import com.team1091.shared.math.inches
+import com.team1091.shared.math.squareACircle
 import com.team1091.shared.system.AutonomousSystem
 import com.team1091.shared.system.PositionSystem
 
@@ -54,12 +55,14 @@ class TeamRobotImpl(
 
     }
 
-
     override fun teleopPeriodic() {
-        components.drive.arcadeDrive(
-                components.gameController.getLeftY(),
-                components.gameController.getLeftX()
+
+        val (x, y) = squareACircle(
+                components.gameController.getLeftX(),
+                components.gameController.getLeftY()
         )
+
+        components.drive.arcadeDrive(y, x)
     }
 
     override fun disabledInit() {
