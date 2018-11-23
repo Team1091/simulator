@@ -3,10 +3,12 @@ package com.team1091.sim
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
 import com.team1091.shared.game.Alliance
+import com.team1091.shared.game.StartingPos
 import com.team1091.sim.components.DummyController
 import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
+import com.team1091.sim.components.SimGyroscope
 import com.team1091.sim.phys.SimRobot
 import org.junit.Test
 
@@ -15,13 +17,7 @@ class SimTest {
     @Test
     fun testThatWorldWorks() {
 
-        val reverse = Math.PI.toFloat()
         val robots = Array(6) { id ->
-
-            val right = id >= 3
-            val xPos = if (right) 1100f else 100f
-            val yPos = 100f + 200f * (id % 3)
-            val rotation = if (right) reverse else 0f
 
             val lEncoder = SimEncoder(20.0)
             val rEncoder = SimEncoder(-20.0)
@@ -32,14 +28,13 @@ class SimTest {
                     drive,
                     lEncoder,
                     rEncoder,
-                    SimAccelerometer()
+                    SimAccelerometer(),
+                    SimGyroscope()
             )
 
-            SimRobot(xPos, yPos, rotation,
+            SimRobot(StartingPos.values()[id],
                     25f, 30f,
                     TeamRobotImpl(rc),
-                    Alliance("Test", 0),
-                    // These are needed to simulate its position.  We may just want to read them from the rc though
                     rc
             )
         }

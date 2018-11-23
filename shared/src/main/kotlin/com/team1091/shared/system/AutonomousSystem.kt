@@ -13,11 +13,9 @@ class AutonomousSystem {
     fun drive(dt: Double) {
 
         if (command == null) {
-            log("Autonomous Completed")
             return  // Done with autonomous
         }
 
-        log(command!!.getMessage())
         val next = command!!.execute(dt)
 
         if (next != command) {
@@ -28,9 +26,4 @@ class AutonomousSystem {
         command = next
     }
 
-    private fun log(message: String) {
-        // TODO: need to pass in logger too
-        println(message)
-//        SmartDashboard.putString("Autonomous", message)
-    }
 }
