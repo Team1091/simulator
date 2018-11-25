@@ -158,6 +158,8 @@ class SimWorld(
             }
         }
 
+        val invertedDt = 1f / dt.toFloat()
+
         // TODO: add each robot's drive's acceleration
         for (robot in robots) {
             val drive = (robot.rc.drive as SimDrive)
@@ -165,13 +167,15 @@ class SimWorld(
 
             val accelerometer = robot.rc.accelerometer as SimAccelerometer
 
-            val acceleration = robot.body.m_force.mul(1f / robot.body.mass)
+            val vel = robot.body.linearVelocity
+            val acceleration = vel.sub(robot.lastVelocity).mul(invertedDt)
+            robot.lastVelocity.set(vel)
+
             accelerometer.set(acceleration.x, acceleration.y, -1f)
 
-            // TODO get gyro
             val gyro = (robot.rc.gyroscope as SimGyroscope)
             val rv = robot.body.angularVelocity
-            gyro.add((rv*dt).radians)
+            gyro.add((rv * dt).radians)
 
         }
 
