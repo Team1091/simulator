@@ -12,9 +12,9 @@ data class Time(val ms: Long) {
         fun now() = Time(System.currentTimeMillis())
     }
 
-    inline fun toSeconds() = ms / 1000.0
-    inline fun toMinutes() = ms / (60 * 1000.0)
-    inline fun toHours() = ms / (60 * 60 * 1000.0)
+    fun toSeconds() = ms / 1000.0
+    fun toMinutes() = ms / (60 * 1000.0)
+    fun toHours() = ms / (60 * 60 * 1000.0)
 
     operator fun plus(other: Time) = Time(this.ms + other.ms)
     operator fun minus(other: Time) = Time(this.ms - other.ms)
