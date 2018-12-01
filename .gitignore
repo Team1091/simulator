@@ -1,3 +1,8 @@
 *.iml
 .idea/
 */build/
+*.jar
+.gradle/
+build/
+out/
+shared/out
