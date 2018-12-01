@@ -147,8 +147,6 @@ class SimWorld(
             Period.DISABLED -> return
         }
 
-
-        // BOX2d goes here
         for (robot in robots) {
             when (currentGameState) {
                 Period.PREMATCH -> Unit

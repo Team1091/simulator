@@ -15,7 +15,8 @@ class CommandList : Command {
     }
 
     override fun firstRun() {
-        this.commands.first().firstRun()
+        if (commands.isNotEmpty())
+            this.commands.first().firstRun()
     }
 
     override fun execute(dt: Double): Command? {

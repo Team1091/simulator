@@ -14,14 +14,14 @@ subprojects {
     apply plugin: "java"
 
     dependencies {
-        compile "com.google.code.gson:gson:2.8.2"
-        testCompile 'junit:junit:4.12'
-        testCompile "org.mockito:mockito-core:2.+"
+        implementation "com.google.code.gson:gson:2.8.2"
+        testImplementation 'junit:junit:4.12'
+        testImplementation "org.mockito:mockito-core:2.+"
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.2'
+wrapper {
+    gradleVersion = '5.0'
 }
 
 task compileAndDeploy() {
