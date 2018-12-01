@@ -1,5 +1,7 @@
 package com.team1091.shared.math
 
+import kotlin.math.abs
+
 fun squareACircle(u: Double, v: Double): Pair<Double, Double> {
     var x = 0.0
     var y = 0.0
@@ -35,16 +37,13 @@ fun squareACircle(u: Double, v: Double): Pair<Double, Double> {
         x = u
         y = v
     }
-    if(u == 0.0)
-    {
+    if (abs(u) <= 0.0001) {
         x = 0.0
     }
-    if(v == 0.0)
-    {
+    if (abs(v) <= 0.0001) {
         y = 0.0
     }
-    println("X Value: $x")
-    println("Y Value: $y")
+    println("$x, $y")
     // https://arxiv.org/pdf/1509.06344.pdf
     return Pair(x, y)
 }

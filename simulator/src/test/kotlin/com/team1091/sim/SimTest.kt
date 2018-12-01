@@ -2,7 +2,6 @@ package com.team1091.sim
 
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
-import com.team1091.shared.game.Alliance
 import com.team1091.shared.game.StartingPos
 import com.team1091.sim.components.DummyController
 import com.team1091.sim.components.SimAccelerometer
