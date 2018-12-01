@@ -3,9 +3,11 @@ package com.team1091.shared.control
 import com.team1091.shared.autonomous.commands.CommandList
 import com.team1091.shared.autonomous.commands.DriveForwards
 import com.team1091.shared.autonomous.commands.Turn
+import com.team1091.shared.autonomous.commands.Wait
 import com.team1091.shared.game.StartingPos
 import com.team1091.shared.math.degrees
 import com.team1091.shared.math.inches
+import com.team1091.shared.math.seconds
 import com.team1091.shared.math.squareACircle
 import com.team1091.shared.system.AutonomousSystem
 import com.team1091.shared.system.PositionSystem
@@ -37,8 +39,11 @@ class TeamRobotImpl(
         autonomousSystem.init(
                 CommandList(
                         DriveForwards(components, 20.0.inches),
+                        Wait(components, 2.seconds),
                         Turn(components, 90.0.degrees),
+                        Wait(components, 2.seconds),
                         DriveForwards(components, 20.0.inches),
+                        Wait(components, 2.seconds),
                         Turn(components, (-90.0).degrees)
                 )
         )

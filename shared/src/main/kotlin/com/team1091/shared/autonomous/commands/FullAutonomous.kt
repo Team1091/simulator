@@ -9,6 +9,7 @@ class FullAutonomous(val components: RobotComponents) : Command {
     }
 
     override fun execute(dt: Double): Command? {
+
         //TODO: this all
         // with what we know, set the field and then plan on it
 
