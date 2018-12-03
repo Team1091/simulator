@@ -50,6 +50,7 @@ class InputMappingTest {
 
     @Test
     fun testFortyFive() {
+        // up and to the right
         val (x, y) = squareACircle(cos(toRadians(45.0)), sin(toRadians(45.0)))
         assertEquals(1.0, x, 0.001)
         assertEquals(1.0, y, 0.001)
@@ -58,28 +59,39 @@ class InputMappingTest {
 
     @Test
     fun testOneThirtyFive() {
-        val (x, y) = squareACircle(cos(toRadians(135.0)), sin(toRadians(45.0)))
-        assertEquals(1.0, x, 0.001)
-        assertEquals(-1.0, y, 0.001)
-    }
-
-
-    @Test
-    fun testTwoTwoFive() {
-        val (x, y) = squareACircle(cos(toRadians(225.0)), sin(toRadians(225.0)))
-        assertEquals(-1.0, x, 0.001)
-        assertEquals(-1.0, y, 0.001)
-    }
-
-    @Test
-    fun testThreeThreeFive() {
-        val (x, y) = squareACircle(cos(toRadians(335.0)), sin(toRadians(335.0)))
+        // up and to the left
+        val (x, y) = squareACircle(
+                cos(toRadians(135.0)),
+                sin(toRadians(45.0))
+        )
         assertEquals(-1.0, x, 0.001)
         assertEquals(1.0, y, 0.001)
     }
 
 
-    @Ignore // comment this out if you want to generate the images
+    @Test
+    fun testTwoTwoFive() {
+        val (x, y) = squareACircle(
+                cos(toRadians(225.0)),
+                sin(toRadians(225.0))
+        )
+        assertEquals(-1.0, x, 0.001)
+        assertEquals(-1.0, y, 0.001)
+    }
+
+
+    @Test
+    fun testThreeThreeFive() {
+        val (x, y) = squareACircle(
+                cos(toRadians(335.0)),
+                sin(toRadians(335.0))
+        )
+        assertEquals(1.0, x, 0.001)
+        assertEquals(-1.0, y, 0.001)
+    }
+
+
+    @Ignore("comment this line out if you want to generate the images")
     @Test
     fun genImage() {
 
@@ -88,7 +100,7 @@ class InputMappingTest {
         // Make a checkerbox
         for (x in 0 until bi.width) {
             for (y in 0 until bi.height) {
-                val color = if (((x / 100) % 2 == 0) xor ((y / 100) % 2 == 0)) Color.BLACK.rgb else Color.WHITE.rgb
+                val color = if (((x / 100) % 2 == 0) xor ((y / 100) % 2 == 0)) Color.BLACK.rgb else Color(x / 1000f, y / 1000f, 0f).rgb
                 bi.setRGB(x, y, color)
             }
         }
@@ -98,11 +110,11 @@ class InputMappingTest {
         val out = BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB)
         for (u in 0 until bi.width) {
             for (v in 0 until bi.height) {
-                val (x, y) = squareACircle((u - 500)  / 1000.0, (v- 500) / 1000.0)
+                val (x, y) = squareACircle((u - 500) / 1000.0, (v - 500) / 1000.0)
 
-                val xScaled = (x * 1000.0).toInt()+ 500
-                val yScaled = (y * 1000.0).toInt()+ 500
-               // println("$xScaled $yScaled")
+                val xScaled = (x * 1000.0).toInt() + 500
+                val yScaled = (y * 1000.0).toInt() + 500
+                // println("$xScaled $yScaled")
 
                 if (xScaled >= 0 && xScaled < bi.width && yScaled >= 0 && yScaled < bi.height) {
                     val color = bi.getRGB(xScaled, yScaled)
