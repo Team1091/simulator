@@ -83,8 +83,8 @@ class InputMappingTest {
     @Test
     fun testThreeThreeFive() {
         val (x, y) = squareACircle(
-                cos(toRadians(335.0)),
-                sin(toRadians(335.0))
+                cos(toRadians(315.0)),
+                sin(toRadians(315.0))
         )
         assertEquals(1.0, x, 0.001)
         assertEquals(-1.0, y, 0.001)
