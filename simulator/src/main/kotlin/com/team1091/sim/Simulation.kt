@@ -127,10 +127,11 @@ class Simulator : PApplet() {
 
     private fun drawLine(positionSystem: PositionSystem) {
         pushMatrix()
-//  TODO: this goes out of control
-//        val position = positionSystem.getPos()
-//        translate(position.x.toFloat(), position.y.toFloat())
-//        triangle(10f, 0f, 0f, -10f, 0f, 10f)
+        // TODO: this goes out of control
+        val position = positionSystem.getPos()
+        translate(position.x.toFloat(), position.y.toFloat())
+        rotate(position.r.toRadians().toFloat())
+        triangle(10f, 0f, 0f, -10f, 0f, 10f)
         popMatrix()
     }
 

@@ -1,8 +1,10 @@
 package com.team1091.sim
 
+import com.team1091.shared.math.radians
 import com.team1091.sim.components.SimAccelerometer
 import com.team1091.sim.components.SimDrive
 import com.team1091.sim.components.SimEncoder
+import com.team1091.sim.components.SimGyroscope
 import com.team1091.sim.phys.GamePiece
 import com.team1091.sim.phys.Obstacle
 import com.team1091.sim.phys.SimRobot
@@ -86,7 +88,7 @@ class SimWorld(
             val bodyDef = BodyDef()
             bodyDef.position.x = it.startingPos.pos.x.toFloat()
             bodyDef.position.y = it.startingPos.pos.y.toFloat()
-            bodyDef.angle = it.startingPos.rotation.toFloat()
+            bodyDef.angle = it.startingPos.rotation.toRadians().toFloat()
             bodyDef.type = BodyType.DYNAMIC
 
             bodyDef.linearDamping = 0.8f
@@ -145,8 +147,6 @@ class SimWorld(
             Period.DISABLED -> return
         }
 
-
-        // BOX2d goes here
         for (robot in robots) {
             when (currentGameState) {
                 Period.PREMATCH -> Unit
@@ -156,6 +156,8 @@ class SimWorld(
             }
         }
 
+        val invertedDt = 1f / dt.toFloat()
+
         // TODO: add each robot's drive's acceleration
         for (robot in robots) {
             val drive = (robot.rc.drive as SimDrive)
@@ -163,18 +165,20 @@ class SimWorld(
 
             val accelerometer = robot.rc.accelerometer as SimAccelerometer
 
-            val acceleration = robot.body.m_force.mul(1f / robot.body.mass)
+            val vel = robot.body.linearVelocity
+            val acceleration = vel.sub(robot.lastVelocity).mul(invertedDt)
+            robot.lastVelocity.set(vel)
+
             accelerometer.set(acceleration.x, acceleration.y, -1f)
 
-            // TODO get gyro
-            //
-            // val torque = robot.body.m_torque
+            val gyro = (robot.rc.gyroscope as SimGyroscope)
+            val rv = robot.body.angularVelocity
+            gyro.add((rv * dt).radians)
 
         }
 
         world.step(dt.toFloat(), 5, 3)
 
-        // TODO: set encoder values?
         for (robot in robots) {
             with(robot) {
 
@@ -186,6 +190,8 @@ class SimWorld(
 
                 lEncode.rotation += (v + rv * lEncode.rotDist) * dt
                 rEncode.rotation += (v + rv * rEncode.rotDist) * dt
+
+
             }
         }
 

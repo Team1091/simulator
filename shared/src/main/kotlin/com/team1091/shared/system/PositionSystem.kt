@@ -2,8 +2,7 @@ package com.team1091.shared.system
 
 import com.team1091.shared.components.IAccelerometer
 import com.team1091.shared.components.IGyroscope
-import kotlin.math.cos
-import kotlin.math.sin
+import com.team1091.shared.math.Rotation
 
 class PositionSystem(
         val accelerometer: IAccelerometer,
@@ -15,20 +14,21 @@ class PositionSystem(
         private var xV: Double,
         private var yV: Double,
 
-        private var angle: Double
+        private val initialAngle: Rotation,
+        private var angle: Rotation = initialAngle.copy()
 ) {
 
     fun integrate(dt: Double) {
 
         // gyroscope already handles integration
-        angle = gyroscope.get()
+        angle = initialAngle + gyroscope.get()
 
         val aX = accelerometer.getX()
         val aY = accelerometer.getY()
 
         // rotate instantaneous accelerations
-        val aXr = (cos(angle) * aX) - (sin(angle) * aY)
-        val aYr = (sin(angle) * aX) + (cos(angle) * aY)
+        val aXr = (angle.cos() * aX) - (angle.sin() * aY)
+        val aYr = (angle.sin() * aX) + (angle.cos() * aY)
 
         // integrate velocity
         xV += (aXr * dt)
@@ -44,4 +44,4 @@ class PositionSystem(
 
 }
 
-class Position(val x: Double, val y: Double, val r: Double)
+class Position(val x: Double, val y: Double, val r: Rotation)
