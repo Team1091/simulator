@@ -3,7 +3,6 @@ package com.team1091.shared.autonomous.commands
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.math.Rotation
 import com.team1091.shared.system.PositionSystem
-import kotlin.math.abs
 
 class TurnToAngle(val components: RobotComponents, val positionSystem: PositionSystem, val targetAngle: Rotation) : Command {
 
@@ -14,39 +13,39 @@ class TurnToAngle(val components: RobotComponents, val positionSystem: PositionS
         println("Turn Starting")
     }
 
+
+    var lastPosition = 0.0
+    var lastTime = 0L
+
     // https://robotic-controls.com/learn/programming/pd-feedback-control-introduction
 
-//    val angle = 5.0
+    // TODO: we need to adjust these and provide a minimum speed that we can break out
+    // Get There Fast - (low rise time)	Smaller Kp
+    // Less Overshoot - Smaller Kp, Larger Kd
+    // Less Vibration - Larger Kd
+
+    val kP = 0.5
+    val kD = 0.8
 
     override fun execute(dt: Double): Command? {
 
-        // TODO:
-        val toRotate = targetAngle - positionSystem.gyroscope.get()
+        val goal = targetAngle.toRadians()
 
-//        if(abs(toRotate.toDegrees())<angle ){
-            // your done
-//            components.drive.arcadeDrive(0.0, 0.0)
-//            return null
-//        }else {
-            components.drive.arcadeDrive(0.0, Math.signum(toRotate.toRadians()))
-//        }
+        val position = positionSystem.gyroscope.get().toRadians()
+        val now = System.currentTimeMillis() // store the current time in "now"
 
-//        if(toRotate)
-//
-//        val ltix = components.leftEncoder.getDistance()
-//        val rtix = components.rightEncoder.getDistance()
-//
-//        val difference = Math.abs(rtix - ltix) / 2.0 // ticks per degree
-//
-//        if (difference > requiredTurnDistance) {
-//            // We have turned far enough, we are done
-//            components.drive.arcadeDrive(0.0, 0.0)
-//            return null
-//
-//        } else {
-//            components.drive.arcadeDrive(0.0, if (isTurnRight) 1.0 else -1.0)
-            return this
-//        }
+        // change in position over change in time
+        val speed = (position - lastPosition) / (now - lastTime)
+
+        // this measurement is now the previous one
+        lastPosition = position;
+        lastTime = now;
+
+        val output = kP * (goal - position) - kD * speed
+
+        components.drive.arcadeDrive(0.0, output)
+
+        return this
 
     }
 
@@ -54,9 +53,5 @@ class TurnToAngle(val components: RobotComponents, val positionSystem: PositionS
         println("Turn Done")
         components.drive.arcadeDrive(0.0, 0.0)
     }
-
-//    override fun getMessage(): String =
-//            "Driving Forwards"
-
 
 }
