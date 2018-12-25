@@ -20,9 +20,9 @@ class TurnToAngle(val components: RobotComponents, val positionSystem: PositionS
     // https://robotic-controls.com/learn/programming/pd-feedback-control-introduction
 
     // TODO: we need to adjust these and provide a minimum speed that we can break out
-    // Get There Fast - (low rise time)	Smaller Kp
-    // Less Overshoot - Smaller Kp, Larger Kd
-    // Less Vibration - Larger Kd
+    // Get There Fast - (low rise time)	Smaller kp
+    // Less Overshoot - Smaller kp, Larger kd
+    // Less Vibration - Larger kd
 
     val kP = 0.5
     val kD = 0.8
