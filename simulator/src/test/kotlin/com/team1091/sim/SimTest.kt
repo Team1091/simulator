@@ -97,7 +97,7 @@ class SimTest {
                 if (angleVel < 0.1 && angle < 0.1) {
                     println("done")
                 }else{
-                    println ("${angleVel} ${angle}")
+                    println ("${world.currentGameState} ${angleVel} ${angle}")
                 }
 
             }
