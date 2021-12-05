@@ -1,20 +1,17 @@
 package com.team1091.sim
 
-import com.studiohartman.jamepad.ControllerManager
+//import com.studiohartman.jamepad.ControllerManager
 import com.team1091.shared.control.RobotComponents
 import com.team1091.shared.control.TeamRobotImpl
 import com.team1091.shared.game.StartingPos
 import com.team1091.shared.system.PositionSystem
-import com.team1091.sim.components.SimAccelerometer
-import com.team1091.sim.components.SimController
-import com.team1091.sim.components.SimDrive
-import com.team1091.sim.components.SimEncoder
-import com.team1091.sim.components.SimGyroscope
+import com.team1091.sim.components.*
 import com.team1091.sim.phys.GamePiece
 import com.team1091.sim.phys.Obstacle
 import com.team1091.sim.phys.SimRobot
 import org.jbox2d.dynamics.Body
 import processing.core.PApplet
+import uk.co.electronstudio.sdl2gdx.SDL2ControllerManager
 import java.awt.Color
 
 
@@ -25,19 +22,21 @@ fun main(args: Array<String>) {
 
 class Simulator : PApplet() {
     private val simWorld: SimWorld
-    private val controllers = ControllerManager()
+    private val controllerManager = SDL2ControllerManager()
 
     init {
-        controllers.initSDLGamepad()
+//        controllers. initSDLGamepad()
 
         val startingPos = StartingPos.values()
+
+        val controllers = controllerManager.controllers
 
         val robots = Array(6) { id ->
 
             val start = startingPos[id]
 
             val rc = RobotComponents(
-                    SimController(controllers, id),
+                    if(controllers.size > id) SimController(controllers[0]) else DummyController(),
                     SimDrive(100000.0, 1000000.0),
                     SimEncoder(20.0),
                     SimEncoder(-20.0),

@@ -1,29 +1,28 @@
-buildscript {
-    ext.kotlin_version = '1.3.10'
+//buildscript {
+//    ext.kotlin_version = '1.3.10'
+//
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
 
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.6.0"
 }
 
 group 'com.team1091'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'kotlin'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-
-}
+//repositories {
+//    mavenCentral()
+//}
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0"
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
 compileKotlin {

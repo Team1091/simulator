@@ -1,1 +1,1 @@
-include "robot", "shared", "simulator"
+include "shared", "simulator"
